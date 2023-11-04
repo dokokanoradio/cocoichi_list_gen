@@ -1,0 +1,2 @@
+# cocoichi_list_gen
+ココイチのリストを出力するWindowsのプログラム
