@@ -4,6 +4,12 @@ use std::io::{BufWriter, Write};
 use std::time;
 
 fn main() {
+    // 改行文字
+    #[cfg(windows)]
+    let line_ending = "\r\n";
+    #[cfg(not(windows))]
+    let line_ending = "\n";
+
     // トッピング
     let topping = [
         "手仕込チキンカツ", //期間限定
@@ -110,7 +116,7 @@ fn main() {
     // トッピング0個
     println!("トッピング0個を出力");
     for r in &roux_vec {
-        f.write(format!("{}{}", r, "\r\n").as_bytes()).unwrap();
+        f.write(format!("{}{}", r, line_ending).as_bytes()).unwrap();
         count += 1;
     }
     println!("ここまでの所要時間：{:?}", now.elapsed());
@@ -120,7 +126,7 @@ fn main() {
     for tp in topping.iter().combinations(1) {
         let tp_text = format!("({})", tp[0]); // トッピング文字列
         for r in &roux_vec {
-            f.write(format!("{}{}{}", r, tp_text, "\r\n").as_bytes())
+            f.write(format!("{}{}{}", r, tp_text, line_ending).as_bytes())
                 .unwrap();
             count += 1;
         }
@@ -132,7 +138,7 @@ fn main() {
     for tp in topping.iter().combinations(2) {
         let tp_text = format!("({}/{})", tp[0], tp[1]); // トッピング文字列
         for r in &roux_vec {
-            f.write(format!("{}{}{}", r, tp_text, "\r\n").as_bytes())
+            f.write(format!("{}{}{}", r, tp_text, line_ending).as_bytes())
                 .unwrap();
             count += 1;
         }
@@ -144,7 +150,7 @@ fn main() {
     for tp in topping.iter().combinations(3) {
         let tp_text = format!("({}/{}/{})", tp[0], tp[1], tp[2]); // トッピング文字列
         for r in &roux_vec {
-            f.write(format!("{}{}{}", r, tp_text, "\r\n").as_bytes())
+            f.write(format!("{}{}{}", r, tp_text, line_ending).as_bytes())
                 .unwrap();
             count += 1;
         }
@@ -156,7 +162,7 @@ fn main() {
     for tp in topping.iter().combinations(4) {
         let tp_text = format!("({}/{}/{}/{})", tp[0], tp[1], tp[2], tp[3]); // トッピング文字列
         for r in &roux_vec {
-            f.write(format!("{}{}{}", r, tp_text, "\r\n").as_bytes())
+            f.write(format!("{}{}{}", r, tp_text, line_ending).as_bytes())
                 .unwrap();
             count += 1;
         }
@@ -168,7 +174,7 @@ fn main() {
     for tp in topping.iter().combinations(5) {
         let tp_text = format!("({}/{}/{}/{}/{})", tp[0], tp[1], tp[2], tp[3], tp[4]); // トッピング文字列
         for r in &roux_vec {
-            f.write(format!("{}{}{}", r, tp_text, "\r\n").as_bytes())
+            f.write(format!("{}{}{}", r, tp_text, line_ending).as_bytes())
                 .unwrap();
             count += 1;
         }

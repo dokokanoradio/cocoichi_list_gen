@@ -1,9 +1,15 @@
-# cocoichi_list_gen
-ココイチの全メニューリストを出力するWindowsのプログラム
+# cocoichi_list_gen v0.0.2 by@dokokanoradio
+ココイチの全メニューリストを出力するプログラム
 
-cocoichi_list_gen.exeを実行すると約10分ほどかけて出力します。
-容量は190GB程なのでストレージの容量はお気を付けください。
+## 動かし方
+* Windowsの場合はcocoichi_list_gen.exe、Mac/Linuxではcocoichi_list_genを実行すると約10分ほどかけてcocoichi.txtを出力します.
+  - (処理時間はスペック依存)
+* 容量はWindowsで190GB程なのでストレージの容量はお気を付けください。
+  - Windowsの場合は改行コードCRLF、その他OSでは改行コードLFで出力する(はず)のため。
+* ファイルサイズが巨大なためWindows付属のメモ帳などでは開けません。
+  * Windowsの場合、[Giga Text Viewer](https://www.vector.co.jp/soft/win95/writing/se485479.html)のような巨大なファイルを想定したビューア/エディタをお使いください。
 
+## リストのルール
 なお、以下のルールに基づいています。
 
 https://www.ichibanya.co.jp/comp/whatsnew/docs/d2d28a011f29c0dc7386d74259522d78e2c1be8f.pdf
@@ -16,7 +22,7 @@ https://www.ichibanya.co.jp/comp/whatsnew/docs/d2d28a011f29c0dc7386d74259522d78e
   - 例：ソーセージ(2本)とソーセージ(4本)は別のトッピングとして扱う
 ものとします。
 
-また、
+また、以下のルールとします。
 * トッピングは2023/11/4時点での通常メニュー52+期間限定4=56種類
   - https://www.ichibanya.co.jp/menu/topping.html 参照
 * ソースは下記5種類
@@ -27,10 +33,11 @@ https://www.ichibanya.co.jp/comp/whatsnew/docs/d2d28a011f29c0dc7386d74259522d78e
   - ハヤシ
 * 辛さは普通、1～10辛、15辛、20辛の13種類
 * 甘さはなし、1～5甘の6種類
-とします。
+  - 甘さに関しては現在自由にソースを掛けられるようになっていますが、メニュー表等の記載が1～5甘なのを考慮しています。
 
-したがって、合計は1,644,404,970 種類となります。
-内訳
+
+したがって、合計は1,644,404,970 種類となります。  
+内訳は下記のとおりです。
 * トッピング0個：390 
 * トッピング1個：21,840 
 * トッピング2個：600,600 
@@ -39,6 +46,12 @@ https://www.ichibanya.co.jp/comp/whatsnew/docs/d2d28a011f29c0dc7386d74259522d78e
 * トッピング5個：1,489,728,240 
 
 
-# その他
-Windows11上のrustでビルドしています。
+## 備考
+動作確認はWindows11上のrustで行っており、Mac/Linuxでは確認しておりません。
 ビルドコマンドは cargo build --release です。
+
+## special thanks
+* [しろっぷ じゅんぺい様](https://twitter.com/syrupjunpei)
+* [しろっぷ ひろし様](https://twitter.com/syruphiroshi)
+* [STVラジオ しろっぷのぶちかましスタッフの皆様](https://www.stv.jp/radio/buchikamashi/index.html)
+* しろっぷのぶちかましリスナーの皆様

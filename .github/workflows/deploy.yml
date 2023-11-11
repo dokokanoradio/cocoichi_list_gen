@@ -1,0 +1,80 @@
+name: Deploy
+permissions:
+  contents: write
+
+on:
+  push:
+    tags:
+      - v*
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        target:
+          - x86_64-pc-windows-msvc
+          - x86_64-apple-darwin
+          - aarch64-apple-darwin
+          - x86_64-unknown-linux-musl
+        include:
+          - target: x86_64-pc-windows-msvc
+            os: windows-latest
+          - target: x86_64-apple-darwin
+            os: macos-latest
+          - target: aarch64-apple-darwin
+            os: macos-latest
+          - target: x86_64-unknown-linux-musl
+            os: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Install musl tools
+        if : matrix.target == 'x86_64-unknown-linux-musl'
+        run: |
+          sudo apt install -qq -y musl-tools --no-install-recommends
+
+      - name: Install Toolchain(Rust)
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          target: ${{ matrix.target }}
+          override: true
+          profile: minimal
+
+      - name: Build
+        uses: actions-rs/cargo@v1
+        with:
+          command: build
+          args: --release --target ${{ matrix.target }}
+
+      - name: Package(Windows)
+        if: matrix.target == 'x86_64-pc-windows-msvc'
+        run: |
+          powershell Compress-Archive -Path target/${{ matrix.target }}/release/cocoichi_list_gen.exe, README.md -DestinationPath cocoichi_list_gen-${{ matrix.target }}.zip
+  
+      - name: Package(MacOS:x86_64)
+        if: matrix.target == 'x86_64-apple-darwin'
+        run: |
+          zip --junk-paths cocoichi_list_gen-${{ matrix.target }} target/${{ matrix.target }}/release/cocoichi_list_gen README.md
+
+      - name: Package(MacOS:aarch64)
+        if: matrix.target == 'aarch64-apple-darwin'
+        run: |
+          zip --junk-paths cocoichi_list_gen-${{ matrix.target }} target/${{ matrix.target }}/release/cocoichi_list_gen README.md
+  
+      - name: Package(Linux)
+        if: matrix.target == 'x86_64-unknown-linux-musl'
+        run: |
+          zip --junk-paths cocoichi_list_gen-${{ matrix.target }} target/${{ matrix.target }}/release/cocoichi_list_gen README.md
+
+
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          files: |
+            cocoichi_list_gen-${{ matrix.target }}.zip
